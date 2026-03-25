@@ -1,40 +1,94 @@
+```html
 <!DOCTYPE html>
 <html lang="es">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Cotizador ICONO PRO</title>
+
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@300;400;600;700&display=swap" rel="stylesheet">
+
 <style>
 :root{--negro:#0a0a0a;--amarillo:#FFE000;--gris:#f4f4f4}
 body{font-family:'Barlow',sans-serif;background:var(--gris);margin:0}
-.header{background:var(--negro);color:white;display:flex;justify-content:space-between;padding:20px;border-bottom:4px solid var(--amarillo)}
+
+.header{
+  background:var(--negro);
+  color:white;
+  display:flex;
+  justify-content:space-between;
+  padding:20px;
+  border-bottom:4px solid var(--amarillo)
+}
+
 .header img{height:60px}
+
 .container{max-width:1000px;margin:auto;padding:20px}
-.card{background:white;margin-bottom:15px;padding:15px;border-radius:6px}
+
+.card{
+  background:white;
+  margin-bottom:15px;
+  padding:15px;
+  border-radius:6px
+}
+
 table{width:100%;border-collapse:collapse}
-th,td{padding:8px;border-bottom:1px solid #ddd;text-align:center}
-button{padding:10px 15px;border:none;background:var(--negro);color:var(--amarillo);cursor:pointer}
-.total{font-size:22px;font-weight:bold;text-align:right}
+
+th,td{
+  padding:8px;
+  border-bottom:1px solid #ddd;
+  text-align:center
+}
+
+button{
+  padding:10px 15px;
+  border:none;
+  background:var(--negro);
+  color:var(--amarillo);
+  cursor:pointer;
+  border-radius:4px;
+}
+
+.total{
+  font-size:22px;
+  font-weight:bold;
+  text-align:right
+}
 </style>
 </head>
+
 <body>
 
 <div class="header">
-<div style="display:flex;gap:10px;align-items:center;">
-<img src="logo.png">
-<h1 style="color:#FFE000;">ICONO</h1>
-</div>
-<div id="fecha"></div>
+  <div style="display:flex;gap:10px;align-items:center;">
+    <img src="logo.png">
+    <h1 style="color:#FFE000;">ICONO</h1>
+  </div>
+  <div id="fecha"></div>
 </div>
 
 <div class="container">
 
-<div class="card">
-<input placeholder="Cliente" id="cliente">
-<input placeholder="Proyecto" id="proyecto">
+<!-- CONTACTO -->
+<div class="card" style="background:#0a0a0a;color:white;">
+  <h3 style="color:#FFE000;">Contacto</h3>
+  <p>📍 Av. Ruiz Cortines 2214, Pedro Lozano, Monterrey, N.L., México</p>
+  <p>📧 ventas@iconograficos.com.mx</p>
+  <p>🌐 https://www.iconograficos.com.mx</p>
+
+  <iframe 
+    src="https://www.google.com/maps?q=Av.+Ruiz+Cortines+2214+Monterrey&output=embed"
+    width="100%" height="200" style="border:0;border-radius:6px;">
+  </iframe>
 </div>
 
+<!-- DATOS -->
+<div class="card">
+  <input placeholder="Cliente" id="cliente">
+  <input placeholder="Proyecto" id="proyecto">
+</div>
+
+<!-- TABLA -->
 <div class="card">
 <table>
 <thead>
@@ -44,14 +98,21 @@ button{padding:10px 15px;border:none;background:var(--negro);color:var(--amarill
 </thead>
 <tbody id="tbody"></tbody>
 </table>
+
 <button onclick="addRow()">+ Agregar</button>
 </div>
 
+<!-- TOTAL -->
 <div class="card total">
-<label style="font-size:14px;"><input type="checkbox" id="toggleIVA" checked onchange="calc()"> Incluir IVA (16%)</label><br><br>
+
+<button onclick="toggleIVA()" id="btnIVA">IVA: ACTIVADO</button>
+
+<br><br>
+
 Subtotal: <span id="sub">0</span><br>
 IVA: <span id="iva">0</span><br>
 TOTAL: <span id="total">0</span>
+
 </div>
 
 <button onclick="guardarPDF()">Exportar PDF</button>
@@ -59,12 +120,30 @@ TOTAL: <span id="total">0</span>
 </div>
 
 <script>
-const precios={vinil:120,lona:90,trovicel:180,coroplast:100,sticker:150,tabloide:80,micro:200,recorte:220};
+const precios={
+  vinil:120,
+  lona:90,
+  trovicel:180,
+  coroplast:100,
+  sticker:150,
+  tabloide:80,
+  micro:200,
+  recorte:220
+};
+
+let ivaActivo = true;
+
+function toggleIVA(){
+  ivaActivo = !ivaActivo;
+  document.getElementById('btnIVA').innerText = ivaActivo ? "IVA: ACTIVADO" : "IVA: DESACTIVADO";
+  calc();
+}
 
 function addRow(){
-const id=Date.now();
-const tr=document.createElement('tr');
-tr.innerHTML=`
+  const id=Date.now();
+  const tr=document.createElement('tr');
+
+  tr.innerHTML=`
 <td>
 <select onchange="setPrecio(${id},this.value)">
 <option value="vinil">Vinil</option>
@@ -77,69 +156,77 @@ tr.innerHTML=`
 <option value="recorte">Vinil Recorte</option>
 </select>
 </td>
+
 <td><input id="p-${id}" type="number"></td>
 <td><input id="c-${id}" type="number" value="1"></td>
 <td><input id="a-${id}" type="number"></td>
 <td><input id="h-${id}" type="number"></td>
+
 <td>
 <select id="u-${id}">
 <option value="cm">cm</option>
 <option value="m">m</option>
 </select>
 </td>
+
 <td id="area-${id}">0</td>
 <td id="sub-${id}">0</td>
-<td><button onclick="this.parentElement.parentElement.remove();calc()">X</button></td>
+
+<td>
+<button onclick="this.parentElement.parentElement.remove();calc()">X</button>
+</td>
 `;
-document.getElementById('tbody').appendChild(tr);
-setPrecio(id,'vinil');
+
+  document.getElementById('tbody').appendChild(tr);
+  setPrecio(id,'vinil');
 }
 
 function setPrecio(id,mat){
-document.getElementById('p-'+id).value=precios[mat]||0;
-calc();
+  document.getElementById('p-'+id).value=precios[mat]||0;
+  calc();
 }
 
 function calc(){
-let total=0;
-document.querySelectorAll('#tbody tr').forEach(tr=>{
-const id=tr.querySelector('input').id.split('-')[1];
-let p=+document.getElementById('p-'+id).value||0;
-let c=+document.getElementById('c-'+id).value||1;
-let a=+document.getElementById('a-'+id).value||0;
-let h=+document.getElementById('h-'+id).value||0;
-let u=document.getElementById('u-'+id).value;
+  let total=0;
 
-// conversión correcta
-if(u==='cm'){a=a/100;h=h/100}
+  document.querySelectorAll('#tbody tr').forEach(tr=>{
+    const id=tr.querySelector('input').id.split('-')[1];
 
-// área REAL (sin mínimo)
-let area=a*h;
+    let p=+document.getElementById('p-'+id).value||0;
+    let c=+document.getElementById('c-'+id).value||1;
+    let a=+document.getElementById('a-'+id).value||0;
+    let h=+document.getElementById('h-'+id).value||0;
+    let u=document.getElementById('u-'+id).value;
 
-let sub=area*p*c;
+    if(u==='cm'){a=a/100;h=h/100}
 
-document.getElementById('area-'+id).innerText=area>0?area.toFixed(4):0;
-document.getElementById('sub-'+id).innerText=sub.toFixed(2);
+    let area=a*h;
+    let sub=area*p*c;
 
-total+=sub;
-});
+    document.getElementById('area-'+id).innerText=area>0?area.toFixed(4):0;
+    document.getElementById('sub-'+id).innerText=sub.toFixed(2);
 
-let incluirIVA=document.getElementById('toggleIVA')?.checked;
-let iva=incluirIVA ? total*0.16 : 0;
+    total+=sub;
+  });
 
-document.getElementById('sub').innerText=total.toFixed(2);
-document.getElementById('iva').innerText=iva.toFixed(2);
-document.getElementById('total').innerText=(total+iva).toFixed(2);
+  let iva = ivaActivo ? total*0.16 : 0;
+
+  document.getElementById('sub').innerText=total.toFixed(2);
+  document.getElementById('iva').innerText=iva.toFixed(2);
+  document.getElementById('total').innerText=(total+iva).toFixed(2);
 }
 
 setInterval(calc,400);
 
 document.getElementById('fecha').innerText=new Date().toLocaleDateString();
 
-function guardarPDF(){window.print();}
+function guardarPDF(){
+  window.print();
+}
 
 addRow();
 </script>
 
 </body>
 </html>
+```
