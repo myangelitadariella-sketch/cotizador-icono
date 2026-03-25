@@ -117,7 +117,9 @@ let u=document.getElementById('u-'+id).value;
 if(u==='cm'){a/=100;h/=100}
 
 let area=a*h;
-if(area>0 && area<1) area=1;
+// quitar mínimo de 1m² para permitir cotizar desde 1cm x 1cm
+// ahora se respeta el área real
+
 
 let sub=area*p*c;
 
