@@ -48,6 +48,7 @@ button{padding:10px 15px;border:none;background:var(--negro);color:var(--amarill
 </div>
 
 <div class="card total">
+<label style="font-size:14px;"><input type="checkbox" id="toggleIVA" checked onchange="calc()"> Incluir IVA (16%)</label><br><br>
 Subtotal: <span id="sub">0</span><br>
 IVA: <span id="iva">0</span><br>
 TOTAL: <span id="total">0</span>
@@ -123,7 +124,8 @@ document.getElementById('sub-'+id).innerText=sub.toFixed(2);
 total+=sub;
 });
 
-let iva=total*0.16;
+let incluirIVA=document.getElementById('toggleIVA')?.checked;
+let iva=incluirIVA ? total*0.16 : 0;
 
 document.getElementById('sub').innerText=total.toFixed(2);
 document.getElementById('iva').innerText=iva.toFixed(2);
