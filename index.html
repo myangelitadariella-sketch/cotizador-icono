@@ -3,338 +3,194 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cotizador ICONO PRO</title>
-
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@300;400;600;700&display=swap" rel="stylesheet">
+<title>Optimizador de Corte PRO</title>
 
 <style>
-:root{
-  --negro:#0a0a0a;
-  --amarillo:#FFE000;
-  --gris:#f4f4f4;
-}
+body{font-family:Arial;background:#f4f4f4;margin:0;padding:20px}
+.container{display:grid;grid-template-columns:1fr 350px;gap:20px}
 
-body{font-family:'Barlow',sans-serif;background:var(--gris);margin:0}
+.card{background:white;padding:15px;border-radius:8px}
 
-/* HEADER */
-.header{
-  background:var(--negro);
-  color:white;
-  display:flex;
-  justify-content:space-between;
-  padding:20px;
-  border-bottom:4px solid var(--amarillo)
-}
-
-.header img{height:60px}
-
-/* LAYOUT */
-.container{max-width:1100px;margin:auto;padding:20px}
-
-.card{
-  background:white;
-  margin-bottom:15px;
-  padding:15px;
-  border-radius:8px;
-  box-shadow:0 2px 6px rgba(0,0,0,0.08);
-}
-
-/* INPUTS */
-input, select, textarea{
-  padding:8px;
-  border-radius:4px;
-  border:1px solid #ccc;
-  width:100%;
-}
-
-/* TABLA */
-table{width:100%;border-collapse:collapse}
-
-th{background:#111;color:#FFE000}
-
-th,td{
-  padding:8px;
-  border-bottom:1px solid #ddd;
-  text-align:center
-}
-
-/* BOTONES */
-button{
-  padding:10px 15px;
-  border:none;
-  background:var(--negro);
-  color:var(--amarillo);
-  cursor:pointer;
-  border-radius:6px;
-  font-weight:bold;
-}
-
-/* SWITCH IVA */
-.switch{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  cursor:pointer;
-}
-
-.switch-box{
-  width:50px;
-  height:25px;
-  background:#ccc;
-  border-radius:20px;
+.canvas{
+  width:240px;
+  height:480px;
+  border:2px solid black;
   position:relative;
-  transition:.3s;
+  margin-bottom:10px;
 }
 
-.switch-box::after{
-  content:'';
-  width:20px;
-  height:20px;
-  background:white;
+.pieza{
   position:absolute;
-  top:2.5px;
-  left:3px;
-  border-radius:50%;
-  transition:.3s;
+  border:1px solid red;
+  background:rgba(255,0,0,0.3);
+  font-size:10px;
+  overflow:hidden;
 }
 
-.switch.active .switch-box{background:#22c55e}
-.switch.active .switch-box::after{left:25px}
-
-/* TOTAL */
-.total{text-align:right}
-.total strong{font-size:26px}
-
-/* PRINT */
-@media print{
-  button,.no-print{display:none}
-  body{background:white}
-  .card{box-shadow:none}
-
-  /* ocultar $/m² y botones */
-  th:nth-child(2), td:nth-child(2),
-  th:last-child, td:last-child{
-    display:none;
-  }
-}
+input,button{padding:8px;margin:5px}
 </style>
 </head>
 
 <body>
 
-<div class="header">
-  <div style="display:flex;gap:10px;align-items:center;">
-    <img src="logo.png">
-    <h1 style="color:#FFE000;">ICONO</h1>
-  </div>
-
-  <div>
-    <div id="fecha"></div>
-    <div id="folio"></div>
-  </div>
-</div>
+<h2>📐 Optimizador de Corte PRO</h2>
 
 <div class="container">
 
-<!-- CONTACTO -->
 <div class="card">
-  <strong>ICONOGRAFICOS</strong><br>
-  📍 Av. Ruiz Cortines 2214, Monterrey, N.L.<br>
-  📞 81 0000 0000<br>
-  📧 ventas@iconograficos.com.mx<br>
-  🌐 www.iconograficos.com.mx
-</div>
 
-<!-- CLIENTE -->
-<div class="card">
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-    <input placeholder="Cliente" id="cliente">
-    <input placeholder="Proyecto" id="proyecto">
-    <input placeholder="Asesor" id="asesor">
-    <input placeholder="Teléfono" id="telefono">
-  </div>
-</div>
+<input id="alto" placeholder="Alto cm">
+<input id="ancho" placeholder="Ancho cm">
+<button onclick="agregar()">Agregar</button>
 
-<!-- BOTONES -->
-<div class="card no-print">
-  <button onclick="toggleModo()" id="modoBtn">Modo: INTERNO</button>
-</div>
-
-<!-- TABLA -->
-<div class="card">
-<table>
-<thead>
-<tr>
-<th>Material</th><th>$/m²</th><th>Cant</th><th>Ancho</th><th>Alto</th><th>Unidad</th><th>Área</th><th>Subtotal</th><th></th>
-</tr>
-</thead>
-<tbody id="tbody"></tbody>
-</table>
-
-<br>
-<button onclick="addRow()" class="no-print">+ Agregar</button>
-</div>
-
-<!-- TOTAL -->
-<div class="card total">
-
-<div class="switch active no-print" id="ivaSwitch" onclick="toggleIVA()">
-  <div class="switch-box"></div>
-  <span id="ivaText">IVA ACTIVADO (16%)</span>
-</div>
-
-<br>
-
-Subtotal: $<span id="sub">0.00</span><br>
-IVA: $<span id="iva">0.00</span><br>
-<strong>TOTAL: $<span id="total">0.00</span></strong>
+<h3>Total: $<span id="total">0</span></h3>
+<h4>Hojas usadas: <span id="hojas">1</span></h4>
+<h4>Uso: <span id="uso">0%</span></h4>
 
 </div>
 
-<!-- NOTAS -->
-<div class="card">
-  <textarea placeholder="Notas o condiciones..."></textarea>
-</div>
-
-<button onclick="guardarPDF()" class="no-print">Exportar PDF</button>
+<div class="card" id="lienzos"></div>
 
 </div>
 
 <script>
-const precios={
-  vinil:120,lona:90,trovicel:180,coroplast:100,
-  sticker:150,tabloide:80,micro:200,recorte:220
-};
 
-let ivaActivo=true;
-let modoCliente=false;
+let hojas = [
+  { espacios:[], areaUsada:0 }
+];
 
-/* IVA */
-function toggleIVA(){
-  ivaActivo=!ivaActivo;
-  document.getElementById('ivaSwitch').classList.toggle('active');
-  document.getElementById('ivaText').innerText=
-    ivaActivo ? "IVA ACTIVADO (16%)" : "IVA DESACTIVADO";
-  calc();
+let total=0;
+
+function crearCanvas(){
+  let div=document.createElement('div');
+  div.className="canvas";
+  document.getElementById('lienzos').appendChild(div);
+  return div;
 }
 
-/* MODO CLIENTE */
-function toggleModo(){
-  modoCliente=!modoCliente;
+crearCanvas();
 
-  const btn=document.getElementById('modoBtn');
-  btn.innerText = modoCliente ? "Modo: CLIENTE" : "Modo: INTERNO";
-
-  document.querySelectorAll('th:nth-child(2), td:nth-child(2)')
-    .forEach(el=>el.style.display = modoCliente ? 'none':'');
+function cabe(x,y,w,h,espacios){
+  return !espacios.some(p=>
+    x < p.x + p.w &&
+    x + w > p.x &&
+    y < p.y + p.h &&
+    y + h > p.y
+  );
 }
 
-/* FOLIO REAL */
-function generarFolio(){
-  let folio = localStorage.getItem('folioICONO');
+function buscarPos(w,h,espacios){
+  for(let y=0;y<=480-h;y+=5){
+    for(let x=0;x<=240-w;x+=5){
+      if(cabe(x,y,w,h,espacios)){
+        return {x,y};
+      }
+    }
+  }
+  return null;
+}
 
-  if(!folio){
-    folio = 1;
-  }else{
-    folio = parseInt(folio) + 1;
+function colocarEnHoja(w,h,hoja){
+
+  let posNormal = buscarPos(w,h,hoja.espacios);
+  let posRotado = buscarPos(h,w,hoja.espacios);
+
+  if(posNormal && posRotado){
+    // elegir mejor (más pegado arriba)
+    return posNormal.y <= posRotado.y 
+      ? {...posNormal,w,h}
+      : {...posRotado,w:h,h:w};
   }
 
-  localStorage.setItem('folioICONO',folio);
+  if(posNormal) return {...posNormal,w,h};
+  if(posRotado) return {...posRotado,w:h,h:w};
 
-  return "COT-" + String(folio).padStart(4,'0');
+  return null;
 }
 
-/* FILAS */
-function addRow(){
-  const id=Date.now();
+function calcularPrecio(a,h){
+  if(a<=60 && h<=60){
+    let m=Math.max(a,h);
+    return m*10;
+  }
 
-  const tr=document.createElement('tr');
+  if(a>=160){
+    if(a>=220) return 750;
+    if(a>=180) return 700;
+    if(a>=170) return 550;
+  }
 
-  tr.innerHTML=`
-<td>
-<select onchange="setPrecio(${id},this.value)">
-<option value="vinil">Vinil</option>
-<option value="lona">Lona</option>
-<option value="trovicel">Trovicel</option>
-<option value="coroplast">Coroplast</option>
-<option value="sticker">Sticker</option>
-<option value="tabloide">Tabloide</option>
-<option value="micro">Microperforado</option>
-<option value="recorte">Vinil Recorte</option>
-</select>
-</td>
-
-<td><input id="p-${id}" type="number"></td>
-<td><input id="c-${id}" type="number" value="1"></td>
-<td><input id="a-${id}" type="number"></td>
-<td><input id="h-${id}" type="number"></td>
-
-<td>
-<select id="u-${id}">
-<option value="cm">cm</option>
-<option value="m">m</option>
-</select>
-</td>
-
-<td id="area-${id}">0</td>
-<td id="sub-${id}">0</td>
-
-<td><button onclick="this.parentElement.parentElement.remove();calc()">X</button></td>
-`;
-
-  document.getElementById('tbody').appendChild(tr);
-  setPrecio(id,'vinil');
+  return (a*h)/100;
 }
 
-function setPrecio(id,mat){
-  document.getElementById('p-'+id).value=precios[mat]||0;
-  calc();
+function agregar(){
+
+  let a=parseFloat(document.getElementById('alto').value);
+  let h=parseFloat(document.getElementById('ancho').value);
+  if(!a||!h)return;
+
+  let precio=calcularPrecio(a,h);
+  total+=precio;
+
+  let w=a*2;
+  let ht=h*2;
+
+  let colocado=false;
+
+  for(let i=0;i<hojas.length;i++){
+    let hoja=hojas[i];
+
+    let pos=colocarEnHoja(w,ht,hoja);
+
+    if(pos){
+      dibujar(i,pos,a,h);
+      hoja.espacios.push(pos);
+      hoja.areaUsada+= (pos.w*pos.h);
+      colocado=true;
+      break;
+    }
+  }
+
+  if(!colocado){
+    hojas.push({espacios:[],areaUsada:0});
+    crearCanvas();
+    agregar();
+    return;
+  }
+
+  actualizarUI();
 }
 
-/* FORMATO */
-function money(n){
-  return n.toLocaleString('es-MX',{minimumFractionDigits:2});
+function dibujar(index,pos,a,h){
+
+  let canvas=document.getElementsByClassName('canvas')[index];
+
+  let div=document.createElement('div');
+  div.className="pieza";
+
+  div.style.left=pos.x+"px";
+  div.style.top=pos.y+"px";
+  div.style.width=pos.w+"px";
+  div.style.height=pos.h+"px";
+
+  div.innerText=a+"x"+h;
+
+  canvas.appendChild(div);
 }
 
-/* CALCULO */
-function calc(){
-  let total=0;
+function actualizarUI(){
 
-  document.querySelectorAll('#tbody tr').forEach(tr=>{
-    const id=tr.querySelector('input').id.split('-')[1];
+  document.getElementById('total').innerText=total.toFixed(2);
+  document.getElementById('hojas').innerText=hojas.length;
 
-    let p=+document.getElementById('p-'+id).value||0;
-    let c=+document.getElementById('c-'+id).value||1;
-    let a=+document.getElementById('a-'+id).value||0;
-    let h=+document.getElementById('h-'+id).value||0;
-    let u=document.getElementById('u-'+id).value;
+  let areaTotal=hojas.length*240*480;
+  let usada=hojas.reduce((acc,h)=>acc+h.areaUsada,0);
 
-    if(u==='cm'){a/=100;h/=100}
+  let uso=(usada/areaTotal)*100;
 
-    let area=a*h;
-    let sub=area*p*c;
-
-    document.getElementById('area-'+id).innerText=area.toFixed(3);
-    document.getElementById('sub-'+id).innerText=money(sub);
-
-    total+=sub;
-  });
-
-  let iva=ivaActivo ? total*0.16 : 0;
-
-  document.getElementById('sub').innerText=money(total);
-  document.getElementById('iva').innerText=money(iva);
-  document.getElementById('total').innerText=money(total+iva);
+  document.getElementById('uso').innerText=uso.toFixed(1)+"%";
 }
 
-/* INIT */
-document.getElementById('fecha').innerText=new Date().toLocaleString('es-MX');
-document.getElementById('folio').innerText="Folio: "+generarFolio();
-
-function guardarPDF(){window.print();}
-
-addRow();
 </script>
 
 </body>
