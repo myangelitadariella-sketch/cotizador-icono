@@ -6,9 +6,7 @@
 <title>Cotizador ICONO PRO</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@300;400;600;700&display=swap" rel="stylesheet">
 <style>
-:root{
---negro:#0a0a0a;--amarillo:#FFE000;--gris:#f4f4f4;
-}
+:root{--negro:#0a0a0a;--amarillo:#FFE000;--gris:#f4f4f4}
 body{font-family:'Barlow',sans-serif;background:var(--gris);margin:0}
 .header{background:var(--negro);color:white;display:flex;justify-content:space-between;padding:20px;border-bottom:4px solid var(--amarillo)}
 .header img{height:60px}
@@ -41,7 +39,7 @@ button{padding:10px 15px;border:none;background:var(--negro);color:var(--amarill
 <table>
 <thead>
 <tr>
-<th>Material</th><th>$/m²</th><th>Cant</th><th>Ancho</th><th>Alto</th><th>Unidad</th><th>Área</th><th>Subtotal</th><th></th>
+<th>Material</th><th>$/m²</th><th>Cant</th><th>Ancho</th><th>Alto</th><th>Unidad</th><th>Área m²</th><th>Subtotal</th><th></th>
 </tr>
 </thead>
 <tbody id="tbody"></tbody>
@@ -60,10 +58,7 @@ TOTAL: <span id="total">0</span>
 </div>
 
 <script>
-const precios={
-vinil:120,lona:90,trovicel:180,coroplast:100,
-sticker:150,tabloide:80,micro:200,recorte:220
-};
+const precios={vinil:120,lona:90,trovicel:180,coroplast:100,sticker:150,tabloide:80,micro:200,recorte:220};
 
 function addRow(){
 const id=Date.now();
@@ -114,16 +109,15 @@ let a=+document.getElementById('a-'+id).value||0;
 let h=+document.getElementById('h-'+id).value||0;
 let u=document.getElementById('u-'+id).value;
 
-if(u==='cm'){a/=100;h/=100}
+// conversión correcta
+if(u==='cm'){a=a/100;h=h/100}
 
+// área REAL (sin mínimo)
 let area=a*h;
-// quitar mínimo de 1m² para permitir cotizar desde 1cm x 1cm
-// ahora se respeta el área real
-
 
 let sub=area*p*c;
 
-document.getElementById('area-'+id).innerText=area.toFixed(2);
+document.getElementById('area-'+id).innerText=area>0?area.toFixed(4):0;
 document.getElementById('sub-'+id).innerText=sub.toFixed(2);
 
 total+=sub;
@@ -136,13 +130,11 @@ document.getElementById('iva').innerText=iva.toFixed(2);
 document.getElementById('total').innerText=(total+iva).toFixed(2);
 }
 
-setInterval(calc,500);
+setInterval(calc,400);
 
 document.getElementById('fecha').innerText=new Date().toLocaleDateString();
 
-function guardarPDF(){
-window.print();
-}
+function guardarPDF(){window.print();}
 
 addRow();
 </script>
