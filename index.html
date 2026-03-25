@@ -111,6 +111,12 @@ button{
   button,.no-print{display:none}
   body{background:white}
   .card{box-shadow:none}
+
+  /* ocultar $/m² y botones */
+  th:nth-child(2), td:nth-child(2),
+  th:last-child, td:last-child{
+    display:none;
+  }
 }
 </style>
 </head>
@@ -131,11 +137,11 @@ button{
 
 <div class="container">
 
-<!-- CONTACTO PRO -->
+<!-- CONTACTO -->
 <div class="card">
   <strong>ICONOGRAFICOS</strong><br>
-  📍 Av. Ruiz Cortines 2214, Pedro Lozano, Monterrey, N.L.<br>
-  📞 +52 1 81 1137 2860<br>
+  📍 Av. Ruiz Cortines 2214, Monterrey, N.L.<br>
+  📞 81 0000 0000<br>
   📧 ventas@iconograficos.com.mx<br>
   🌐 www.iconograficos.com.mx
 </div>
@@ -150,6 +156,11 @@ button{
   </div>
 </div>
 
+<!-- BOTONES -->
+<div class="card no-print">
+  <button onclick="toggleModo()" id="modoBtn">Modo: INTERNO</button>
+</div>
+
 <!-- TABLA -->
 <div class="card">
 <table>
@@ -162,13 +173,13 @@ button{
 </table>
 
 <br>
-<button onclick="addRow()">+ Agregar</button>
+<button onclick="addRow()" class="no-print">+ Agregar</button>
 </div>
 
 <!-- TOTAL -->
 <div class="card total">
 
-<div class="switch active" id="ivaSwitch" onclick="toggleIVA()">
+<div class="switch active no-print" id="ivaSwitch" onclick="toggleIVA()">
   <div class="switch-box"></div>
   <span id="ivaText">IVA ACTIVADO (16%)</span>
 </div>
@@ -197,7 +208,9 @@ const precios={
 };
 
 let ivaActivo=true;
+let modoCliente=false;
 
+/* IVA */
 function toggleIVA(){
   ivaActivo=!ivaActivo;
   document.getElementById('ivaSwitch').classList.toggle('active');
@@ -206,8 +219,36 @@ function toggleIVA(){
   calc();
 }
 
+/* MODO CLIENTE */
+function toggleModo(){
+  modoCliente=!modoCliente;
+
+  const btn=document.getElementById('modoBtn');
+  btn.innerText = modoCliente ? "Modo: CLIENTE" : "Modo: INTERNO";
+
+  document.querySelectorAll('th:nth-child(2), td:nth-child(2)')
+    .forEach(el=>el.style.display = modoCliente ? 'none':'');
+}
+
+/* FOLIO REAL */
+function generarFolio(){
+  let folio = localStorage.getItem('folioICONO');
+
+  if(!folio){
+    folio = 1;
+  }else{
+    folio = parseInt(folio) + 1;
+  }
+
+  localStorage.setItem('folioICONO',folio);
+
+  return "COT-" + String(folio).padStart(4,'0');
+}
+
+/* FILAS */
 function addRow(){
   const id=Date.now();
+
   const tr=document.createElement('tr');
 
   tr.innerHTML=`
@@ -251,10 +292,12 @@ function setPrecio(id,mat){
   calc();
 }
 
+/* FORMATO */
 function money(n){
   return n.toLocaleString('es-MX',{minimumFractionDigits:2});
 }
 
+/* CALCULO */
 function calc(){
   let total=0;
 
@@ -285,11 +328,9 @@ function calc(){
   document.getElementById('total').innerText=money(total+iva);
 }
 
-document.getElementById('fecha').innerText=
-  new Date().toLocaleString('es-MX');
-
-document.getElementById('folio').innerText=
-  "Folio: COT-" + Math.floor(Math.random()*10000);
+/* INIT */
+document.getElementById('fecha').innerText=new Date().toLocaleString('es-MX');
+document.getElementById('folio').innerText="Folio: "+generarFolio();
 
 function guardarPDF(){window.print();}
 
