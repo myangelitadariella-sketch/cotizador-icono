@@ -3,595 +3,147 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cotizador ICONO | Pro</title>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<title>Cotizador ICONO PRO</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow:wght@300;400;600;700&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --negro: #0a0a0a;
-    --blanco: #ffffff;
-    --amarillo: #FFE000;
-    --amarillo-dark: #ccb300;
-    --gris-claro: #f4f4f4;
-    --gris-medio: #d0d0d0;
-    --gris-oscuro: #6b6b6b;
-    --rojo: #c0392b;
-    --fondo: #fafafa;
-  }
-
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-
-  body {
-    font-family: 'Barlow', sans-serif;
-    background: var(--fondo);
-    color: var(--negro);
-    font-size: 14px;
-    line-height: 1.5;
-  }
-
-  /* ===== HEADER ===== */
-  .header {
-    background: var(--negro);
-    color: var(--blanco);
-    padding: 18px 40px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 20px;
-    border-bottom: 4px solid var(--amarillo);
-  }
-  .header-logo {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-  }
-  .header-logo img {
-    height: 58px;
-    width: auto;
-    object-fit: contain;
-  }
-  .header-brand h1 {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 2.2rem;
-    letter-spacing: 6px;
-    color: var(--amarillo);
-    line-height: 1;
-  }
-  .header-brand p {
-    font-size: 11px;
-    color: #aaa;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-  }
-  .header-folio { text-align: right; }
-  .folio-label {
-    font-size: 10px;
-    color: #888;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    margin-bottom: 4px;
-  }
-  .folio-num {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1.5rem;
-    color: var(--amarillo);
-    letter-spacing: 2px;
-  }
-  .folio-fecha { font-size: 11px; color: #888; }
-
-  /* ===== FRANJA AMARILLA DECORATIVA ===== */
-  .stripe {
-    height: 5px;
-    background: repeating-linear-gradient(
-      90deg,
-      var(--amarillo) 0px,
-      var(--amarillo) 18px,
-      var(--negro) 18px,
-      var(--negro) 22px
-    );
-  }
-
-  /* ===== CONTENEDOR ===== */
-  .container {
-    max-width: 960px;
-    margin: 0 auto;
-    padding: 28px 20px;
-  }
-
-  /* ===== CARDS ===== */
-  .card {
-    background: var(--blanco);
-    border: 1px solid var(--gris-medio);
-    border-radius: 4px;
-    margin-bottom: 20px;
-    overflow: hidden;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
-  }
-  .card-header {
-    background: var(--negro);
-    color: var(--amarillo);
-    padding: 9px 18px;
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 1rem;
-    letter-spacing: 3px;
-    border-left: 4px solid var(--amarillo);
-  }
-  .card-body { padding: 18px; }
-
-  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
-
-  label {
-    display: block;
-    font-size: 10px;
-    font-weight: 700;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    color: var(--gris-oscuro);
-    margin-bottom: 5px;
-  }
-  input[type="text"], input[type="number"], select, textarea {
-    width: 100%;
-    border: 1.5px solid var(--gris-medio);
-    border-radius: 3px;
-    padding: 8px 10px;
-    font-family: 'Barlow', sans-serif;
-    font-size: 13px;
-    color: var(--negro);
-    background: var(--blanco);
-    transition: border-color 0.2s;
-    outline: none;
-  }
-  input:focus, select:focus, textarea:focus { border-color: var(--amarillo); }
-  textarea { resize: vertical; min-height: 60px; }
-
-  /* IVA checkbox */
-  .iva-row {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-top: 10px;
-  }
-  .iva-row input[type="checkbox"] {
-    width: 16px; height: 16px;
-    accent-color: var(--amarillo);
-    cursor: pointer;
-  }
-  .iva-row label {
-    margin: 0;
-    font-size: 12px;
-    font-weight: 600;
-    cursor: pointer;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    color: var(--negro);
-  }
-
-  /* ===== TABLA ===== */
-  .tabla-conceptos {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 13px;
-  }
-  .tabla-conceptos thead tr { background: var(--negro); }
-  .tabla-conceptos thead th {
-    padding: 10px 12px;
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 0.85rem;
-    letter-spacing: 2px;
-    text-align: left;
-    font-weight: 400;
-    color: var(--amarillo);
-  }
-  .tabla-conceptos thead th:last-child { text-align: center; }
-  .tabla-conceptos tbody tr { border-bottom: 1px solid var(--gris-medio); }
-  .tabla-conceptos tbody tr:nth-child(even) { background: #fffdf0; }
-  .tabla-conceptos td { padding: 8px 12px; vertical-align: middle; }
-  .tabla-conceptos td input, .tabla-conceptos td select {
-    padding: 5px 8px;
-    font-size: 12px;
-    border-radius: 2px;
-  }
-  .tabla-conceptos td input[type="number"] { width: 75px; }
-  .td-area, .td-subtotal { font-weight: 600; min-width: 70px; }
-  .td-subtotal { color: #997700; }
-  .td-delete { text-align: center; }
-  .btn-delete {
-    background: none;
-    border: none;
-    color: var(--rojo);
-    font-size: 16px;
-    cursor: pointer;
-    padding: 4px 8px;
-    border-radius: 3px;
-    transition: background 0.2s;
-  }
-  .btn-delete:hover { background: #fde; }
-
-  /* ===== BOTONES ===== */
-  .btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-    padding: 10px 22px;
-    border: none;
-    border-radius: 3px;
-    font-family: 'Barlow', sans-serif;
-    font-size: 12px;
-    font-weight: 700;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: all 0.2s;
-  }
-  .btn-agregar {
-    background: var(--negro);
-    color: var(--amarillo);
-    margin-top: 14px;
-    border: 1.5px solid var(--amarillo);
-  }
-  .btn-agregar:hover { background: #222; }
-  .btn-imprimir {
-    background: var(--amarillo);
-    color: var(--negro);
-    font-size: 13px;
-    padding: 12px 28px;
-  }
-  .btn-imprimir:hover { background: var(--amarillo-dark); }
-
-  /* ===== TOTALES ===== */
-  .totales-box { margin-top: 20px; display: flex; justify-content: flex-end; }
-  .totales-inner {
-    background: var(--blanco);
-    border: 1px solid var(--gris-medio);
-    border-radius: 4px;
-    min-width: 290px;
-    overflow: hidden;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
-  }
-  .totales-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px 16px;
-    border-bottom: 1px solid var(--gris-medio);
-  }
-  .totales-row:last-child { border-bottom: none; }
-  .totales-label {
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    color: var(--gris-oscuro);
-  }
-  .totales-valor { font-weight: 700; font-size: 14px; color: var(--negro); }
-  .total-grande {
-    background: var(--negro);
-    padding: 14px 16px;
-    border-left: 4px solid var(--amarillo);
-  }
-  .total-grande .totales-label { color: var(--amarillo); font-size: 13px; letter-spacing: 2px; }
-  .total-grande .totales-valor {
-    color: var(--amarillo);
-    font-size: 22px;
-    font-family: 'Bebas Neue', sans-serif;
-    letter-spacing: 1px;
-  }
-
-  /* ===== ACCIONES ===== */
-  .acciones { margin-top: 24px; display: flex; gap: 12px; justify-content: flex-end; }
-  .observaciones-row { margin-top: 20px; }
-
-  /* ===== PRECIOS ===== */
-  .precios-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
-  .precio-item label { color: var(--negro); }
-
-  /* ===== FOOTER ===== */
-  .footer-print {
-    display: none;
-    margin-top: 30px;
-    padding-top: 14px;
-    border-top: 3px solid #FFE000;
-    text-align: center;
-    font-size: 11px;
-    color: #888;
-    letter-spacing: 1px;
-  }
-
-  /* ===== PRINT ===== */
-  @media print {
-    * {
-      -webkit-print-color-adjust: exact !important;
-      print-color-adjust: exact !important;
-      color-adjust: exact !important;
-    }
-    body { background: white !important; font-size: 12px; }
-    .no-print { display: none !important; }
-
-    .header {
-      background: #0a0a0a !important;
-      border-bottom: 4px solid #FFE000 !important;
-      padding: 14px 20px;
-    }
-    .header-brand h1 { color: #FFE000 !important; }
-    .folio-num { color: #FFE000 !important; }
-    .stripe { background: #FFE000 !important; height: 4px !important; }
-
-    .container { padding: 16px 20px; }
-    .card { break-inside: avoid; margin-bottom: 14px; box-shadow: none; }
-    .card-header {
-      background: #0a0a0a !important;
-      color: #FFE000 !important;
-      border-left: 4px solid #FFE000 !important;
-    }
-
-    .tabla-conceptos thead tr { background: #0a0a0a !important; }
-    .tabla-conceptos thead th { color: #FFE000 !important; }
-    .tabla-conceptos tbody tr:nth-child(even) { background: #fffdf0 !important; }
-    .tabla-conceptos td input,
-    .tabla-conceptos td select {
-      border: none !important;
-      background: transparent !important;
-      padding: 2px !important;
-    }
-    .btn-delete, .td-delete { display: none !important; }
-    .tabla-conceptos thead th:last-child { display: none !important; }
-
-    .totales-inner { border: 1px solid #ccc !important; box-shadow: none; }
-    .total-grande {
-      background: #0a0a0a !important;
-      border-left: 4px solid #FFE000 !important;
-    }
-    .total-grande .totales-label { color: #FFE000 !important; }
-    .total-grande .totales-valor { color: #FFE000 !important; }
-
-    .acciones, .btn-agregar, .precios-config { display: none !important; }
-    input[type="text"], input[type="number"], select, textarea {
-      border: none !important;
-      background: transparent !important;
-    }
-    .footer-print { display: block !important; }
-  }
+:root{
+--negro:#0a0a0a;--amarillo:#FFE000;--gris:#f4f4f4;
+}
+body{font-family:'Barlow',sans-serif;background:var(--gris);margin:0}
+.header{background:var(--negro);color:white;display:flex;justify-content:space-between;padding:20px;border-bottom:4px solid var(--amarillo)}
+.header img{height:60px}
+.container{max-width:1000px;margin:auto;padding:20px}
+.card{background:white;margin-bottom:15px;padding:15px;border-radius:6px}
+table{width:100%;border-collapse:collapse}
+th,td{padding:8px;border-bottom:1px solid #ddd;text-align:center}
+button{padding:10px 15px;border:none;background:var(--negro);color:var(--amarillo);cursor:pointer}
+.total{font-size:22px;font-weight:bold;text-align:right}
 </style>
 </head>
 <body>
 
-<!-- HEADER -->
 <div class="header">
-  <div class="header-logo">
-    <img src="logo.png" alt="Logo ICONO">
-    <div class="header-brand">
-      <h1>ICONO</h1>
-      <p>Monterrey, NL &bull; Soluciones Visuales</p>
-    </div>
-  </div>
-  <div class="header-folio">
-    <div class="folio-label">Folio de Control</div>
-    <div class="folio-num" id="folio-display">--</div>
-    <div class="folio-fecha" id="fecha-display"></div>
-  </div>
+<div style="display:flex;gap:10px;align-items:center;">
+<img src="logo.png">
+<h1 style="color:#FFE000;">ICONO</h1>
 </div>
-<div class="stripe"></div>
+<div id="fecha"></div>
+</div>
 
 <div class="container">
 
-  <!-- DATOS DE VENTA -->
-  <div class="card">
-    <div class="card-header">Datos de Venta</div>
-    <div class="card-body">
-      <div class="grid-3" style="margin-bottom:12px;">
-        <div>
-          <label>Cliente</label>
-          <input type="text" id="cliente" placeholder="Nombre del cliente">
-        </div>
-        <div>
-          <label>Proyecto / Descripción</label>
-          <input type="text" id="proyecto" placeholder="Nombre del proyecto">
-        </div>
-        <div>
-          <label>Folio</label>
-          <input type="text" id="folio" placeholder="ICO-001" oninput="actualizarFolio()">
-        </div>
-      </div>
-      <div class="iva-row">
-        <input type="checkbox" id="toggle-iva" onchange="recalcular()">
-        <label for="toggle-iva">Desglosar IVA (16%)</label>
-      </div>
-    </div>
-  </div>
+<div class="card">
+<input placeholder="Cliente" id="cliente">
+<input placeholder="Proyecto" id="proyecto">
+</div>
 
-  <!-- PRECIOS CONFIGURABLES -->
-  <div class="card precios-config no-print">
-    <div class="card-header">Precios por m² (editables)</div>
-    <div class="card-body">
-      <div class="precios-grid">
-        <div class="precio-item">
-          <label>Vinil ($/m²)</label>
-          <input type="number" id="precio-vinil" value="0" min="0" step="1" oninput="recalcular()">
-        </div>
-        <div class="precio-item">
-          <label>Lona ($/m²)</label>
-          <input type="number" id="precio-lona" value="0" min="0" step="1" oninput="recalcular()">
-        </div>
-        <div class="precio-item">
-          <label>Trovicel ($/m²)</label>
-          <input type="number" id="precio-trovicel" value="0" min="0" step="1" oninput="recalcular()">
-        </div>
-        <div class="precio-item">
-          <label>Coroplast ($/m²)</label>
-          <input type="number" id="precio-coroplast" value="0" min="0" step="1" oninput="recalcular()">
-        </div>
-      </div>
-    </div>
-  </div>
+<div class="card">
+<table>
+<thead>
+<tr>
+<th>Material</th><th>$/m²</th><th>Cant</th><th>Ancho</th><th>Alto</th><th>Unidad</th><th>Área</th><th>Subtotal</th><th></th>
+</tr>
+</thead>
+<tbody id="tbody"></tbody>
+</table>
+<button onclick="addRow()">+ Agregar</button>
+</div>
 
-  <!-- NOTAS -->
-  <div class="card">
-    <div class="card-header">Notas Adicionales</div>
-    <div class="card-body">
-      <label>Cotización preparada para:</label>
-      <input type="text" id="para-quien" placeholder="Público General">
-    </div>
-  </div>
+<div class="card total">
+Subtotal: <span id="sub">0</span><br>
+IVA: <span id="iva">0</span><br>
+TOTAL: <span id="total">0</span>
+</div>
 
-  <!-- CONCEPTOS -->
-  <div class="card">
-    <div class="card-header">Conceptos</div>
-    <div class="card-body" style="padding:0;">
-      <table class="tabla-conceptos">
-        <thead>
-          <tr>
-            <th>Material / Servicio</th>
-            <th>Precio m²</th>
-            <th>Cantidad</th>
-            <th>Ancho (cm)</th>
-            <th>Alto (cm)</th>
-            <th>Área m²</th>
-            <th>Subtotal</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody id="tbody"></tbody>
-      </table>
-      <div style="padding:12px;">
-        <button class="btn btn-agregar no-print" onclick="agregarFila()">
-          + Agregar Concepto
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <!-- OBSERVACIONES -->
-  <div class="observaciones-row">
-    <label>Observaciones:</label>
-    <textarea id="observaciones" placeholder="Condiciones de entrega, vigencia, notas especiales..."></textarea>
-  </div>
-
-  <!-- TOTALES -->
-  <div class="totales-box">
-    <div class="totales-inner">
-      <div class="totales-row">
-        <span class="totales-label">Subtotal</span>
-        <span class="totales-valor" id="subtotal-display">$0.00</span>
-      </div>
-      <div class="totales-row" id="row-iva" style="display:none;">
-        <span class="totales-label">IVA (16%)</span>
-        <span class="totales-valor" id="iva-display">$0.00</span>
-      </div>
-      <div class="totales-row total-grande">
-        <span class="totales-label">TOTAL</span>
-        <span class="totales-valor" id="total-display">$0.00</span>
-      </div>
-    </div>
-  </div>
-
-  <!-- ACCIONES -->
-  <div class="acciones no-print">
-    <button class="btn btn-imprimir" onclick="imprimirCotizacion()">
-      🖨️ IMPRIMIR / PDF
-    </button>
-  </div>
-
-  <!-- FOOTER SOLO EN IMPRESIÓN -->
-  <div class="footer-print">
-    ICONO &bull; Monterrey, NL &bull; Soluciones Visuales
-  </div>
+<button onclick="guardarPDF()">Exportar PDF</button>
 
 </div>
 
 <script>
-const fmt = n => '$' + Number(n).toLocaleString('es-MX', {minimumFractionDigits:2, maximumFractionDigits:2});
+const precios={
+vinil:120,lona:90,trovicel:180,coroplast:100,
+sticker:150,tabloide:80,micro:200,recorte:220
+};
 
-function getPrecio(material) {
-  const map = { vinil:'precio-vinil', lona:'precio-lona', trovicel:'precio-trovicel', coroplast:'precio-coroplast' };
-  const id = map[material];
-  if (!id) return 0;
-  return parseFloat(document.getElementById(id).value) || 0;
+function addRow(){
+const id=Date.now();
+const tr=document.createElement('tr');
+tr.innerHTML=`
+<td>
+<select onchange="setPrecio(${id},this.value)">
+<option value="vinil">Vinil</option>
+<option value="lona">Lona</option>
+<option value="trovicel">Trovicel</option>
+<option value="coroplast">Coroplast</option>
+<option value="sticker">Sticker</option>
+<option value="tabloide">Tabloide</option>
+<option value="micro">Microperforado</option>
+<option value="recorte">Vinil Recorte</option>
+</select>
+</td>
+<td><input id="p-${id}" type="number"></td>
+<td><input id="c-${id}" type="number" value="1"></td>
+<td><input id="a-${id}" type="number"></td>
+<td><input id="h-${id}" type="number"></td>
+<td>
+<select id="u-${id}">
+<option value="cm">cm</option>
+<option value="m">m</option>
+</select>
+</td>
+<td id="area-${id}">0</td>
+<td id="sub-${id}">0</td>
+<td><button onclick="this.parentElement.parentElement.remove();calc()">X</button></td>
+`;
+document.getElementById('tbody').appendChild(tr);
+setPrecio(id,'vinil');
 }
 
-function actualizarFolio() {
-  const val = document.getElementById('folio').value;
-  document.getElementById('folio-display').textContent = val || '--';
+function setPrecio(id,mat){
+document.getElementById('p-'+id).value=precios[mat]||0;
+calc();
 }
 
-(function initFecha() {
-  const d = new Date();
-  document.getElementById('fecha-display').textContent = d.toLocaleDateString('es-MX', {day:'2-digit', month:'long', year:'numeric'});
-})();
+function calc(){
+let total=0;
+document.querySelectorAll('#tbody tr').forEach(tr=>{
+const id=tr.querySelector('input').id.split('-')[1];
+let p=+document.getElementById('p-'+id).value||0;
+let c=+document.getElementById('c-'+id).value||1;
+let a=+document.getElementById('a-'+id).value||0;
+let h=+document.getElementById('h-'+id).value||0;
+let u=document.getElementById('u-'+id).value;
 
-let filaId = 0;
-function agregarFila() {
-  filaId++;
-  const id = filaId;
-  const tr = document.createElement('tr');
-  tr.id = 'fila-' + id;
-  tr.innerHTML = `
-    <td>
-      <select onchange="autoSetPrecio(${id}, this.value); recalcular()">
-        <option value="vinil" selected>Vinil</option>
-        <option value="lona">Lona</option>
-        <option value="trovicel">Trovicel</option>
-        <option value="coroplast">Coroplast</option>
-        <option value="custom">Otro / Servicio</option>
-      </select>
-    </td>
-    <td><input type="number" id="pm-${id}" value="0" min="0" step="0.01" style="width:80px;" oninput="recalcular()"></td>
-    <td><input type="number" id="qty-${id}" value="1" min="1" step="1" style="width:60px;" oninput="recalcular()"></td>
-    <td><input type="number" id="ancho-${id}" value="" min="0" step="0.1" placeholder="cm" oninput="recalcular()"></td>
-    <td><input type="number" id="alto-${id}" value="" min="0" step="0.1" placeholder="cm" oninput="recalcular()"></td>
-    <td class="td-area" id="area-${id}">—</td>
-    <td class="td-subtotal" id="sub-${id}">$0.00</td>
-    <td class="td-delete"><button class="btn-delete" onclick="eliminarFila(${id})">✕</button></td>
-  `;
-  document.getElementById('tbody').appendChild(tr);
-  document.getElementById('pm-' + id).value = getPrecio('vinil');
-  recalcular();
+if(u==='cm'){a/=100;h/=100}
+
+let area=a*h;
+if(area>0 && area<1) area=1;
+
+let sub=area*p*c;
+
+document.getElementById('area-'+id).innerText=area.toFixed(2);
+document.getElementById('sub-'+id).innerText=sub.toFixed(2);
+
+total+=sub;
+});
+
+let iva=total*0.16;
+
+document.getElementById('sub').innerText=total.toFixed(2);
+document.getElementById('iva').innerText=iva.toFixed(2);
+document.getElementById('total').innerText=(total+iva).toFixed(2);
 }
 
-function autoSetPrecio(id, material) {
-  if (material !== 'custom') {
-    document.getElementById('pm-' + id).value = getPrecio(material);
-  }
+setInterval(calc,500);
+
+document.getElementById('fecha').innerText=new Date().toLocaleDateString();
+
+function guardarPDF(){
+window.print();
 }
 
-function eliminarFila(id) {
-  const tr = document.getElementById('fila-' + id);
-  if (tr) tr.remove();
-  recalcular();
-}
-
-function recalcular() {
-  let subtotal = 0;
-  document.querySelectorAll('#tbody tr').forEach(tr => {
-    const idStr = tr.id.replace('fila-', '');
-    const pm = parseFloat(document.getElementById('pm-' + idStr)?.value) || 0;
-    const qty = parseFloat(document.getElementById('qty-' + idStr)?.value) || 1;
-    const ancho = parseFloat(document.getElementById('ancho-' + idStr)?.value) || 0;
-    const alto = parseFloat(document.getElementById('alto-' + idStr)?.value) || 0;
-    const area = (ancho / 100) * (alto / 100);
-    const areaCob = area < 1 && area > 0 ? 1 : area;
-    const sub = areaCob * pm * qty;
-    document.getElementById('area-' + idStr).textContent = area > 0 ? areaCob.toFixed(2) + ' m²' : '—';
-    document.getElementById('sub-' + idStr).textContent = fmt(sub);
-    subtotal += sub;
-  });
-  const tieneIVA = document.getElementById('toggle-iva').checked;
-  const iva = tieneIVA ? subtotal * 0.16 : 0;
-  const total = subtotal + iva;
-  document.getElementById('subtotal-display').textContent = fmt(subtotal);
-  document.getElementById('iva-display').textContent = fmt(iva);
-  document.getElementById('total-display').textContent = fmt(total);
-  document.getElementById('row-iva').style.display = tieneIVA ? 'flex' : 'none';
-}
-
-function imprimirCotizacion() {
-  const folioInput = document.getElementById('folio');
-  if (!folioInput.value) {
-    folioInput.value = 'ICO-' + String(Date.now()).slice(-4);
-    actualizarFolio();
-  }
-  window.print();
-}
-
-window.onload = function() { agregarFila(); };
+addRow();
 </script>
+
 </body>
 </html>
